@@ -553,6 +553,7 @@ def get_browser_langs():
 
 def set_iface_lang():
     host_lang = request.environ.get('reddit-prefer-lang')
+    host_lang = "ko"
     lang = host_lang or c.user.pref_lang
 
     if getattr(g, "lang_override") and lang == "en":
