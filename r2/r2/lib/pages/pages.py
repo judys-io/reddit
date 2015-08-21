@@ -1058,12 +1058,9 @@ class RedditFooter(CachedTemplate):
     def __init__(self):
         self.nav = [
             NavMenu([
-                    NamedButton("blog", False, nocname=True, dest="/blog"),
                     NamedButton("about", False, nocname=True),
                     NamedButton("team", False, nocname=True, dest="/about/team"),
                     NamedButton("source_code", False, nocname=True, dest="/code"),
-                    NamedButton("advertising", False, nocname=True),
-                    NamedButton("jobs", False, nocname=True),
                 ],
                 title = _("about"),
                 type = "flat_vert",
@@ -1082,21 +1079,9 @@ class RedditFooter(CachedTemplate):
                 separator = ""),
 
             NavMenu([
-                    OffsiteButton(_("Alien Blue iOS app"), "//alienblue.org"),
-                    OffsiteButton(_("mobile beta"), "https://m.reddit.com"),
                     NamedButton("buttons", False, nocname=True),
                 ],
                 title = _("apps & tools"),
-                type = "flat_vert",
-                separator = ""),
-
-            NavMenu([
-                    NamedButton("gold", False, nocname=True, dest="/gold/about", css_class="buygold"),
-                    OffsiteButton(_("reddit store"), "http://redditmarket.com"),
-                    OffsiteButton(_("redditgifts"), "//redditgifts.com"),
-                    OffsiteButton(_("reddit.tv"), "//reddit.tv"),
-                ],
-                title = _("<3"),
                 type = "flat_vert",
                 separator = "")
         ]
