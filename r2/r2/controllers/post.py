@@ -55,7 +55,7 @@ class PostController(ApiController):
         prefs = {"pref_lang": pref_lang}
         set_prefs(c.user, prefs)
         c.user._commit()
-        return self.redirect(request.referer)
+        return self.redirect(request.referer, 302, False)
 
     @validate(VUser(), VModhash(),
               all_langs=VOneOf('all-langs', ('all', 'some'), default='all'),
