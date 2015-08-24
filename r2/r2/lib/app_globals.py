@@ -248,6 +248,7 @@ class Globals(object):
             'ENFORCE_RATELIMIT',
             'RL_SITEWIDE_ENABLED',
             'RL_OAUTH_SITEWIDE_ENABLED',
+            'disable_gold',
         ],
 
         ConfigValue.tuple: [

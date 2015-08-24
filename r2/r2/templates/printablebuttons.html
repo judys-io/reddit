@@ -152,7 +152,7 @@
 </%def>
 
 <%def name="give_gold()">
-  % if thing.show_givegold:
+  % if thing.show_givegold and not g.disable_gold:
     <li class="give-gold-button">
     <a href="/gold?goldtype=gift&months=1&thing=${thing.thing._fullname}"
         title="${_("give reddit gold in appreciation of this post.")}"

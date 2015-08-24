@@ -911,8 +911,9 @@ class Reddit(Templated):
         if c.site == Friends:
             main_buttons = [NamedButton('new', dest='', aliases=['/hot']),
                             NamedButton('comments'),
-                            NamedButton('gilded'),
                             ]
+            if not g.disable_gold:
+                main_buttons.append(NamedButton('gilded'))
         else:
             main_buttons = [NamedButton('hot', dest='', aliases=['/hot']),
                             NamedButton('new'),
@@ -921,7 +922,7 @@ class Reddit(Templated):
                             NamedButton('top'),
                             ]
 
-            if c.site.allow_gilding:
+            if not g.disable_gold and c.site.allow_gilding:
                 main_buttons.append(NamedButton('gilded',
                                                 aliases=['/comments/gilded']))
 
@@ -2246,8 +2247,10 @@ class ProfilePage(Reddit):
         path = "/user/%s/" % self.user.name
         main_buttons = [NavButton(menu.overview, '/', aliases = ['/overview']),
                    NamedButton('comments'),
-                   NamedButton('submitted'),
-                   NamedButton('gilded')]
+                   NamedButton('submitted')]
+
+        if not g.disable_gold:
+            main_buttons += [NamedButton('gilded')]
 
         if votes_visible(self.user):
             main_buttons += [

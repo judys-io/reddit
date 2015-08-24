@@ -357,7 +357,7 @@
   %endif
   %endif
 
-  %if c.user.gold:
+  %if c.user.gold and not g.disable_gold:
   <tr class="gold-accent">
     <th>${_("gold options")}</th>
     <td class="prefright">
@@ -380,7 +380,7 @@
         ${checkbox(_wsf("use a %(creddit_link)s to automatically renew my gold if it expires", creddit_link=creddit_link), "creddit_autorenew")}
     </td>
   </tr>
-  %elif c.user.is_moderator_somewhere:
+  %elif c.user.is_moderator_somewhere and not g.disable_gold:
   <tr class="gold-accent">
     <th>${_("gold options")}</th>
     <td class="prefright">

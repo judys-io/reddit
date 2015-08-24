@@ -165,10 +165,12 @@ try participating in other communities on reddit for a little while first before
               hover_title = "[?]"
               hover_text = unsafe(capture(_md, 'BETA: Subreddits can be created as "gold only" during creation by a user that has gold. You can find more info about this feature [here](/gold/about#gold-only-subreddits)'))
       %>
-      ${utils.radio_type('type', "gold_only", _("gold only"),
-              _("only reddit gold members can view and submit"),
-              checked=is_gold_only, disabled=not can_set_gold_only, hover_title=hover_title,
-              hover_text=hover_text)}
+      %if not g.disable_gold:
+        ${utils.radio_type('type', "gold_only", _("gold only"),
+                _("only reddit gold members can view and submit"),
+                checked=is_gold_only, disabled=not can_set_gold_only, hover_title=hover_title,
+                hover_text=hover_text)}
+      %endif
       </table>
       ${error_field("INVALID_OPTION", "type")}
       ${error_field("ADMIN_REQUIRED", "type")}

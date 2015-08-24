@@ -156,7 +156,7 @@
     </div>
   %endif
 
-%if hasattr(thing, "goldlink"):
+%if hasattr(thing, "goldlink") and not g.disable_gold:
   <div class="giftgold">
     <a href="${thing.goldlink}" class="access-required"
        data-type="account" data-fullname="${thing.user._fullname}"

@@ -42,7 +42,7 @@
     <a href="/me/f/all">${_("Exclude custom subreddits")}</a>
 </div>
 
-%if not thing.gilding_listing:
+%if not thing.gilding_listing and not g.disable_gold:
 <div class="gilded-link">
   <a href="/r/all/gilded">${_("See gilded comments and submissions")}</a>
 </div>
