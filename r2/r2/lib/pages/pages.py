@@ -935,7 +935,7 @@ class Reddit(Templated):
                     main_buttons.append(NavButton('wiki', 'wiki'))
 
             if (isinstance(c.site, (Subreddit, DefaultSR, MultiReddit)) and
-                    c.site.allow_ads):
+                    c.site.allow_ads and not g.disable_ads):
                 main_buttons.append(NavButton(menu.promoted, 'ads'))
 
         more_buttons = []
