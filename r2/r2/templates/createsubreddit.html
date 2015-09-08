@@ -109,6 +109,7 @@ try participating in other communities on reddit for a little while first before
     %endif
   </%utils:line_field>
 
+  <div class="hidden">
   <%utils:line_field title="${_('language')}">
     <div class="delete-field">
       <%
@@ -119,6 +120,7 @@ try participating in other communities on reddit for a little while first before
       ${language_tool(all_langs = True, default_lang = default_lang)}
     </div>
   </%utils:line_field>
+  </div>
 
   <%utils:line_field title="${_('type')}">
     <div class="delete-field">
