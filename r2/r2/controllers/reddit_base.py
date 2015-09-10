@@ -1596,10 +1596,6 @@ class RedditController(OAuth2ResourceController):
                 Subreddit._by_name(c.user.pref_default_theme_sr).can_view(c.user))
         sr_stylesheet_enabled = c.user.use_subreddit_style(c.site)
 
-        if (not sr_stylesheet_enabled and
-                not has_style_override):
-            c.can_apply_styles = False
-
         c.bare_content = request.GET.pop('bare', False)
 
         c.show_admin_bar = admin_bar_eligible and (c.user_is_admin or g.debug)
