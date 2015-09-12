@@ -514,7 +514,8 @@ def _encode_query(query, bq, faceting, size, start, rank, rank_expressions,
         raise ValueError("Need query or bq")
     params = {}
     if bq:
-        params["bq"] = bq
+        params["q.parser"] = "structured"
+        params["q"] = bq
     if query:
         params["q"] = query
     params["results-type"] = "json"
