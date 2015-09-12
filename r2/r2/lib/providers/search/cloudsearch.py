@@ -518,7 +518,6 @@ def _encode_query(query, bq, faceting, size, start, rank, rank_expressions,
         params["q"] = bq
     if query:
         params["q"] = query
-    params["results-type"] = "json"
     params["size"] = size
     params["start"] = start
     if rank:
