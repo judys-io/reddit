@@ -527,11 +527,13 @@ def _encode_query(query, bq, faceting, size, start, rank, rank_expressions,
         for rank, expression in rank_expressions.iteritems():
             params['rank-%s' % rank] = expression
     if faceting:
-        params["facet"] = ",".join(faceting.iterkeys())
-        for facet, options in faceting.iteritems():
-            params["facet-%s-top-n" % facet] = options.get("count", 20)
+        for facet in faceting.iterkeys():
+            options = faceting[facet]
+            opt = {}
+            opt['size'] = options.get("count", 20)
             if "sort" in options:
-                params["facet-%s-sort" % facet] = options["sort"]
+                opt['sort'] = options["sort"]
+            params["facet.%s" % facet] = opt;
     if return_fields:
         params["return-fields"] = ",".join(return_fields)
     encoded_query = urllib.urlencode(params)
