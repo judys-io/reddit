@@ -491,7 +491,7 @@ def basic_query(query=None, bq=None, faceting=None, size=1000,
 
 
 basic_link = functools.partial(basic_query, size=10, start=0,
-                               rank="-relevance",
+                               rank="relevance desc",
                                return_fields=['title', 'reddit',
                                               'author_fullname'],
                                record_stats=False,
@@ -501,7 +501,7 @@ basic_link = functools.partial(basic_query, size=10, start=0,
 basic_subreddit = functools.partial(basic_query,
                                     faceting=None,
                                     size=10, start=0,
-                                    rank="-activity",
+                                    rank="activity desc",
                                     return_fields=['title', 'reddit',
                                                    'author_fullname'],
                                     record_stats=False,
@@ -522,10 +522,10 @@ def _encode_query(query, bq, faceting, size, start, rank, rank_expressions,
     params["size"] = size
     params["start"] = start
     if rank:
-        params["rank"] = rank
+        params["sort"] = rank
     if rank_expressions:
         for rank, expression in rank_expressions.iteritems():
-            params['rank-%s' % rank] = expression
+            params['expr.%s' % rank] = expression
     if faceting:
         for facet in faceting.iterkeys():
             options = faceting[facet]
@@ -725,12 +725,12 @@ class CloudSearchQuery(object):
 class LinkSearchQuery(CloudSearchQuery):
     search_api = g.CLOUDSEARCH_SEARCH_API
     sorts = {
-        'relevance': '-relevance',
-        'relevance2': '-relevance2',
-        'hot': '-hot2',
-        'top': '-top',
-        'new': '-timestamp',
-        'comments': '-num_comments',
+        'relevance': 'relevance desc',
+        'relevance2': 'relevance2 desc',
+        'hot': 'hot2 desc',
+        'top': 'top desc',
+        'new': 'timestamp desc',
+        'comments': 'num_comments desc',
     }
     recents = {
         'hour': timedelta(hours=1),
@@ -752,7 +752,7 @@ class LinkSearchQuery(CloudSearchQuery):
     def __init__(self, *args, **kwargs):
         if kwargs.get('sort') == 'relevance2':
             kwargs['bypass_l2cs'] = True
-            kwargs['raw_sort'] = '-relevance2'
+            kwargs['raw_sort'] = 'relevance2 desc'
         super(LinkSearchQuery, self).__init__(*args, **kwargs)
 
     def customize_query(self, bq=u''):
@@ -808,8 +808,8 @@ class LinkSearchQuery(CloudSearchQuery):
 class CloudSearchSubredditSearchQuery(CloudSearchQuery):
     search_api = g.CLOUDSEARCH_SUBREDDIT_SEARCH_API
     sorts = {
-        'relevance': '-relevance',
-        'activity': '-activity',
+        'relevance': 'relevance desc',
+        'activity': 'activity desc',
     }
     known_syntaxes = ("plain",)
     default_syntax = "plain"
