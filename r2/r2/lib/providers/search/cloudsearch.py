@@ -31,8 +31,6 @@ import socket
 import time
 import urllib
 
-import l2cs
-
 from r2.lib import amqp, filters
 from r2.lib.db.operators import desc
 from r2.lib.db.sorts import epoch_seconds
@@ -514,7 +512,7 @@ def _encode_query(query, bq, faceting, size, start, rank, rank_expressions,
         raise ValueError("Need query or bq")
     params = {}
     if bq:
-        params["q.parser"] = "structured"
+        params["q.parser"] = "lucene"
         params["q"] = bq
     if query:
         params["q"] = query
@@ -546,11 +544,10 @@ class CloudSearchQuery(object):
     sorts = {}
     recents = {None: None}
     default_syntax = "plain"
-    lucene_parser = None
 
     def __init__(self, query, sr=None, sort=None, syntax=None, raw_sort=None,
                  faceting=None, recent=None, include_over18=True,
-                 rank_expressions=None, bypass_l2cs=False, start=0, num=1000):
+                 rank_expressions=None, start=0, num=1000):
         if syntax is None:
             syntax = self.default_syntax
         elif syntax not in self.known_syntaxes:
@@ -577,7 +574,6 @@ class CloudSearchQuery(object):
         else:
             self.sort = self.sorts.get(sort)
         self.rank_expressions = rank_expressions
-        self.bypass_l2cs = bypass_l2cs
 
         # pagination
         self.start = start
@@ -596,21 +592,8 @@ class CloudSearchQuery(object):
     def _parse(self):
         query = self.preprocess_query(self.query)
 
-        if self.syntax == "cloudsearch":
+        if self.syntax == "cloudsearch" or self.syntax == "lucene":
             self.bq = self.customize_query(query)
-        elif self.syntax == "lucene":
-            # For the most part, conversion to cloudsearch structured query syntax
-            # is not needed, except for fielded searches using ":" and boolean
-            # searches using AND/OR/NOT (in order to avoid transforming the query)
-            lucene_operators = (':', ' AND ', ' OR ', ' NOT ')
-            if (self.bypass_l2cs
-                    and not any(op in query for op in lucene_operators)):
-                self.q = query.encode('utf-8')
-                self.bq = self.customize_query()
-            else:
-                bq = l2cs.convert(query, self.lucene_parser)
-                self.converted_data = {"syntax": "cloudsearch", "converted": bq}
-                self.bq = self.customize_query(bq)
         elif self.syntax == "plain":
             self.q = query.encode('utf-8')
             self.bq = self.customize_query()
@@ -740,17 +723,11 @@ class LinkSearchQuery(CloudSearchQuery):
         'all': None,
         None: None,
     }
-    schema = l2cs.make_schema(LinkFields.lucene_fieldnames())
-    lucene_parser = l2cs.make_parser(
-             int_fields=LinkFields.lucene_fieldnames(type_=int),
-             yesno_fields=LinkFields.lucene_fieldnames(type_="yesno"),
-             schema=schema)
     known_syntaxes = g.search_syntaxes
     default_syntax = "lucene"
 
     def __init__(self, *args, **kwargs):
         if kwargs.get('sort') == 'relevance2':
-            kwargs['bypass_l2cs'] = True
             kwargs['raw_sort'] = 'relevance2 desc'
         super(LinkSearchQuery, self).__init__(*args, **kwargs)
 
