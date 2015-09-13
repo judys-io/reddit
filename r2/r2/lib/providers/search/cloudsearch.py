@@ -689,9 +689,6 @@ class CloudSearchQuery(object):
             g.log.error("Search Error: %r", e)
             raise
 
-        warnings = response['info'].get('messages', [])
-        for warning in warnings:
-            g.log.warning("%(code)s (%(severity)s): %(message)s" % warning)
 
         hits = response['hits']['found']
         docs = [doc['id'] for doc in response['hits']['hit']]
