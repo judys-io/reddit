@@ -694,7 +694,7 @@ class CloudSearchQuery(object):
         docs = [doc['id'] for doc in response['hits']['hit']]
         facets = response.get('facets', {})
         for facet in facets.keys():
-            values = facets[facet]['constraints']
+            values = facets[facet]['buckets']
             facets[facet] = values
 
         results = Results(docs, hits, facets)
