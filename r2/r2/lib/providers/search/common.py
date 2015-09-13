@@ -284,10 +284,6 @@ class SubredditFields(FieldsBase):
         return self.sr.type
 
     @field
-    def language(self):
-        return self.sr.lang
-
-    @field
     def header_title(self):
         return None if self.sr.type == 'private' else self.sr.header_title
 
