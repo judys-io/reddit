@@ -621,15 +621,6 @@ class CloudSearchQuery(object):
     def customize_query(self, bq=u''):
         return bq
 
-    @classmethod
-    def create_boolean_query(cls, queries):
-        '''Return an AND clause combining all queries'''
-        if len(queries) > 1:
-            return '(and ' + ' '.join(queries) + ')'
-        elif queries:
-            return queries[0]
-        return u''
-
     def __repr__(self):
         '''Return a string representation of this query'''
         result = ["<", self.__class__.__name__, "> query:",
@@ -729,19 +720,18 @@ class LinkSearchQuery(CloudSearchQuery):
         super(LinkSearchQuery, self).__init__(*args, **kwargs)
 
     def customize_query(self, bq=u''):
-        queries = []
-        if bq:
-            queries = [bq]
+        queries = "" + bq;
+
         if self.sr:
             subreddit_query = self._restrict_sr(self.sr)
             if subreddit_query:
-                queries.append(subreddit_query)
+                queries = queries + " " + subreddit_query
         if self.recent:
             recent_query = self._restrict_recent(self.recent)
-            queries.append(recent_query)
+            queries = queries + " " + recent_query
         if not self.include_over18:
-            queries.append('over18:0')
-        return self.create_boolean_query(queries)
+            queries = queries + " over18:0"
+        return queries
 
     @staticmethod
     def _restrict_recent(recent):
@@ -795,12 +785,10 @@ class CloudSearchSubredditSearchQuery(CloudSearchQuery):
         return query
 
     def customize_query(self, bq=u''):
-        queries = []
-        if bq:
-            queries = [bq]
+        queries = "" + bq
         if not self.include_over18:
-            queries.append('over18:0')
-        return self.create_boolean_query(queries)
+            queries = queries + " over18:0"
+        return queries
 
 
 class CloudSearchProvider(SearchProvider):
