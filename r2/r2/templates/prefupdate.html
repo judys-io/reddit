@@ -122,7 +122,7 @@
   </div>
 
   <div class="spacer">
-    <%utils:round_field title="${_('new password')}">
+    <%utils:round_field title="${_('new password')}" description="(최소 6자리)">
       <input type="password" name="newpass">
       ${error_field("BAD_PASSWORD", "newpass")}
     </%utils:round_field>
