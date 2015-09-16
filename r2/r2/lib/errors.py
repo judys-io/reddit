@@ -29,7 +29,7 @@ from copy import copy
 
 
 error_list = dict((
-        ('USER_REQUIRED', _("Please log in to do that.")),
+        ('USER_REQUIRED', _("please sign in to do that")),
         ('MOD_REQUIRED', _("You must be a moderator to do that.")),
         ('HTTPS_REQUIRED', _("this page must be accessed using https")),
         ('WRONG_DOMAIN', _("you can't do that on this domain")),
@@ -47,9 +47,9 @@ error_list = dict((
         ('NO_THING_ID', _('id not specified')),
         ('TOO_MANY_THING_IDS', _('you provided too many ids')),
         ('NOT_AUTHOR', _("you can't do that")),
-        ('NOT_USER', _("You are not logged in as that user.")),
+        ('NOT_USER', _("you are not signed in as that user")),
         ('NOT_FRIEND', _("you are not friends with that user")),
-        ('LOGGED_IN', _("You are already logged in.")),
+        ('LOGGED_IN', _("you are already signed in")),
         ('DELETED_COMMENT', _('that comment has been deleted')),
         ('DELETED_THING', _('that element has been deleted')),
         ('SHORT_PASSWORD', _('the password must be at least %(chars)d characters')),

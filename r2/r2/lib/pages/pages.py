@@ -1410,7 +1410,7 @@ class FormPage(BoringPage):
 
 class LoginPage(BoringPage):
     enable_login_cover = False
-    short_title = "log in"
+    short_title = "login"
 
     """a boring page which provides the Login/register form"""
     def __init__(self, **context):
@@ -1422,7 +1422,7 @@ class LoginPage(BoringPage):
         if c.render_style == "compact":
             title = self.short_title
         else:
-            title = _("sign up or log in")
+            title = _("create an account or sign in")
 
         BoringPage.__init__(self, title, **context)
 
@@ -1450,7 +1450,7 @@ class LoginPage(BoringPage):
         return Login(**kw)
 
 class RegisterPage(LoginPage):
-    short_title = "sign up"
+    short_title = "register"
     @classmethod
     def login_template(cls, **kw):
         return Register(**kw)

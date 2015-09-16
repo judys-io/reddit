@@ -112,22 +112,22 @@ r.login.ui = {
       if ($el.hasClass('up')) {
         return {
             eventName: 'upvote',
-            description: r._('You need to be logged in to upvote things.')
+            description: r._('you need to be signed in to upvote stuff')
         };
       } else if ($el.hasClass('down')) {
         return {
             eventName: 'downvote',
-            description: r._('You need to be logged in to downvote things.')
+            description: r._('you need to be signed in to downvote stuff')
         };
       } else if ($el.hasClass('arrow')) {
         return {
             eventName: 'arrow',
-            description: r._('You need to be logged in to vote on things.')
+            description: r._('you need to be signed in to vote on stuff')
         };
       } else if ($el.hasClass('give-gold')) {
         return {
             eventName: 'give-gold',
-            description: r._('You need to be logged in to give gold.')
+            description: r._('you need to be signed in to give gold')
         };
       } else if ($el.parents("#header").length && $el.attr('href').indexOf('login') !== -1) {
         return {
@@ -136,22 +136,27 @@ r.login.ui = {
       } else if ($el.parents('.subscribe-button').length) {
         return {
             eventName: 'subscribe-button',
-            description: r._('You need to be logged in to subscribe to subreddits.')
+            description: r._('you need to be signed in to subscribe to stuff')
         };
       } else if ($el.parents('.submit-link').length) {
         return {
             eventName: 'submit-link',
-            description: r._('You need to be logged in to submit things.')
+            description: r._('you need to be signed in to submit stuff')
         };
       } else if ($el.parents('.submit-text').length) {
         return {
             eventName: 'submit-text',
-            description: r._('You need to be logged in to submit things.')
+            description: r._('you need to be signed in to submit stuff')
+        };
+      } else if ($el.parents('.share-button').length) {
+        return {
+            eventName: 'share-button',
+            description: r._('you need to be signed in to share stuff')
         };
       } else {
         return {
             eventName: $el.attr('class'),
-            description: r._('You need to be logged in to do that.')
+            description: r._('you need to be signed in to do that')
         };
       }
     },

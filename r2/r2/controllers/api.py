@@ -1259,7 +1259,7 @@ class ApiController(RedditController):
             return
 
         form.set_text('.status',
-                      _('all other sessions have been logged out'))
+                      _('all other sessions have been signed out'))
         form.set_inputs(curpass = "")
 
         # deauthorize all access tokens
@@ -1364,7 +1364,7 @@ class ApiController(RedditController):
                    user = VThrottledLogin(["user", "passwd"]),
                    confirm = VBoolean("confirm"))
     def POST_delete_user(self, form, jquery, delete_message, username, user, confirm):
-        """Delete the currently logged in account.
+        """Delete the currently signed in account.
 
         A valid username/password and confirmation must be supplied. An
         optional `delete_message` may be supplied to explain the reason the
@@ -4217,7 +4217,7 @@ class ApiController(RedditController):
         If `link` is given, return link flair options.
         Otherwise, return user flair options for this subreddit.
 
-        The logged in user's flair is also returned.
+        The signed in user's flair is also returned.
         Subreddit moderators may give a user by `name` to instead
         retrieve that user's flair.
 
