@@ -378,7 +378,7 @@ class Subreddit(Thing, Printable, BaseSite):
         if not name:
             return False
 
-        if allow_reddit_dot_com and name.lower() == "reddit.com":
+        if allow_reddit_dot_com and name.lower() == "judys.io":
             return True
 
         valid = bool(subreddit_rx.match(name))
