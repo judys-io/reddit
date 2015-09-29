@@ -304,6 +304,8 @@ class Globals(object):
             'nerds_email',
             'community_email',
             'smtp_server',
+            'smtp_username',
+            'smtp_password',
             'events_collector_url',
             'events_collector_test_url',
             'search_provider',

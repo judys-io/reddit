@@ -254,6 +254,14 @@ def send_queued_mail(test = False):
     clear = False
     if not test:
         session = smtplib.SMTP(g.smtp_server)
+        if g.smtp_username and g.smtp_password:
+            try:
+                session.login(g.smtp_username, g.smtp_password)
+            except (smtplib.SMTPHeloError, smtplib.SMTPAuthenticationError,
+                    smtplib.SMTPException):
+                print "Failed to login smtp server"
+                traceback.print_exc(file = sys.stdout)
+                email.set_sent(rejected = True)
     def sendmail(email):
         try:
             mimetext = email.to_MIMEText()
@@ -410,6 +418,14 @@ def send_html_email(to_addr, from_addr, subject, html,
         msg.attach(part)
 
     session = smtplib.SMTP(g.smtp_server)
+    if g.smtp_username and g.smtp_password:
+        try:
+            session.login(g.smtp_username, g.smtp_password)
+        except (smtplib.SMTPHeloError, smtplib.SMTPAuthenticationError,
+                smtplib.SMTPException):
+            print "Failed to login smtp server"
+            traceback.print_exc(file = sys.stdout)
+            email.set_sent(rejected = True)
     session.sendmail(from_addr, to_addr, msg.as_string())
     session.quit()
 
