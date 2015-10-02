@@ -65,7 +65,7 @@ from r2.lib.utils import (
 )
 from r2.lib.cache import sgm
 from r2.lib.strings import strings, Score
-from r2.lib.filters import _force_unicode
+from r2.lib.filters import _force_unicode, _force_utf8
 from r2.lib.db import tdb_cassandra
 from r2.lib.db.tdb_sql import CreationError
 from r2.models.wiki import WikiPage, ImagesByWikiPage
@@ -108,7 +108,8 @@ def get_user_location():
     return get_request_location(request, c)
 
 
-subreddit_rx = re.compile(r"\A[A-Za-z0-9][A-Za-z0-9_]{2,20}\Z")
+subreddit_rx = re.compile(ur"\A[A-Za-z0-9\uAC00-\uD7A3][A-Za-z0-9\uAC00-\uD7A3_]{2,20}\Z")
+subreddit_two_korean_rx = re.compile(ur"\A[\uAC00-\uD7A3][\uAC00-\uD7A3_]\Z")
 language_subreddit_rx = re.compile(r"\A[a-z]{2}\Z")
 time_subreddit_rx = re.compile(r"\At:[A-Za-z0-9][A-Za-z0-9_]{2,22}\Z")
 
@@ -378,10 +379,13 @@ class Subreddit(Thing, Printable, BaseSite):
         if not name:
             return False
 
+        name = _force_unicode(name)
+
         if allow_reddit_dot_com and name.lower() == "judys.io":
             return True
 
-        valid = bool(subreddit_rx.match(name))
+        valid = (bool(subreddit_rx.match(name)) or
+            bool(subreddit_two_korean_rx.match(name)))
 
         if not valid and allow_language_srs:
             valid = bool(language_subreddit_rx.match(name))
@@ -407,14 +411,14 @@ class Subreddit(Thing, Printable, BaseSite):
         Subreddit objects. Items that were not found are ommitted from the dict.
         If no items are found, an empty dict is returned.
         '''
+
         names, single = tup(names, True)
 
         to_fetch = {}
         ret = {}
 
         for name in names:
-            ascii_only = str(name.decode("ascii", errors="ignore"))
-            lname = ascii_only.lower()
+            lname = _force_utf8(name).lower()
 
             if lname in cls._specials:
                 ret[name] = cls._specials[lname]
@@ -462,7 +466,8 @@ class Subreddit(Thing, Printable, BaseSite):
                 srs = cls._byID(srids, data=True, return_dict=False, stale=stale)
 
             for sr in srs:
-                ret[to_fetch[sr.name.lower()]] = sr
+                lname = _force_utf8(sr.name).lower()
+                ret[to_fetch[lname]] = sr
 
         if ret and single:
             return ret.values()[0]
@@ -488,6 +493,10 @@ class Subreddit(Thing, Printable, BaseSite):
             return cls._byID(sr_id, True)
         else:
             return None
+
+    @property
+    def uname(self):
+        return _force_unicode(self.name)
 
     @property
     def allowed_types(self):

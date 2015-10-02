@@ -76,7 +76,7 @@ def popular_searches(include_over_18=True):
             continue
         if sr.over_18 and not include_over_18:
             continue
-        name = sr.name.lower()
+        name = sr.uname.lower()
         for i in xrange(min(len(name), 3)):
             query = name[:i + 1]
             r = search_reddits(query, include_over_18)

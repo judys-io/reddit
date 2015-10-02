@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # The contents of this file are subject to the Common Public Attribution
 # License Version 1.0. (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -115,6 +116,15 @@ class IsValidNameTest(unittest.TestCase):
 
     def test_numerics(self):
         self.assertTrue(Subreddit.is_valid_name('090'))
+
+    def test_korean(self):
+        self.assertTrue(Subreddit.is_valid_name(u'가나'))
+
+    def test_mixed(self):
+        self.assertTrue(Subreddit.is_valid_name(u'가나_abc_010'))
+
+    def test_mixed_short(self):
+        self.assertFalse(Subreddit.is_valid_name(u'가1'))
 
 
 class ByNameTest(unittest.TestCase):

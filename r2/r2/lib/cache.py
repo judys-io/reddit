@@ -138,7 +138,7 @@ class CMemcache(CacheUtils):
                  no_block=False,
                  min_compress_len=512 * 1024,
                  num_clients=10,
-                 binary=False,
+                 binary=True,
                  validators=None):
         self.name = name
         self.servers = servers
