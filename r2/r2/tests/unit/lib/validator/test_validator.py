@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # The contents of this file are subject to the Common Public Attribution
 # License Version 1.0. (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -36,6 +37,7 @@ from r2.lib.validator import (
     VSubmitParent,
     VSubredditName,
     ValidEmail,
+    VUname,
 )
 from r2.models import Account, Comment, Link, Message, Subreddit
 
@@ -332,3 +334,30 @@ class TestValidEmail(ValidatorTests):
 
     def test_two_hostnames(self):
         self._test_failure('test@example.com@example.com')
+
+class TestVUname(ValidatorTests):
+    def setUp(self):
+        # Reset the validator state and errors before every test.
+        #self.validator = VUname(("user",))
+        self.validator = VUname(None)
+        c.errors = ErrorSet()
+
+    def _test_failure(self, input, error=errors.USERNAME_INVALID_CHARACTERS):
+        super(TestVUname, self)._test_failure(input, error)
+
+    # Most of this validator's logic is already covered in `IsValidNameTest`.
+
+    def test_valid_names(self):
+        self._test_success('example123')
+        self._test_success('example12-3')
+        self._test_success('example_12-3')
+
+    def test_hangul(self):
+        self._test_success(u'테스트123')
+        self._test_success(u'테스트12-3')
+        self._test_success(u'테스트_12-3')
+
+    def test_invalid_char(self):
+        self._test_failure(u'테스트山')
+        self.setUp()
+        self._test_failure(u'테스트つど')

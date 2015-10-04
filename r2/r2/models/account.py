@@ -357,10 +357,13 @@ class Account(Thing):
     @classmethod
     def _by_name(cls, name, allow_deleted = False, _update = False):
         #lower name here so there is only one cache
-        uid = cls._by_name_cache(name.lower(), allow_deleted, _update = _update)
-        if uid:
-            return cls._byID(uid, True)
-        else:
+        try:
+            uid = cls._by_name_cache(name.lower(), allow_deleted, _update = _update)
+            if uid:
+                return cls._byID(uid, True)
+            else:
+                raise NotFound, 'Account %s' % name
+        except AttributeError:
             raise NotFound, 'Account %s' % name
 
     @classmethod
