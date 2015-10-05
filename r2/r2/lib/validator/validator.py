@@ -2953,8 +2953,8 @@ class VValidatedJSON(VJSON):
         }
 
 
-multi_name_rx = re.compile(r"\A[A-Za-z0-9][A-Za-z0-9_]{1,20}\Z")
-multi_name_chars_rx = re.compile(r"[^A-Za-z0-9_]")
+multi_name_rx = re.compile(ur"\A[A-Za-z0-9\uAC00-\uD7A3][A-Za-z0-9\uAC00-\uD7A3_]{1,20}\Z")
+multi_name_chars_rx = re.compile(ur"[^A-Za-z0-9\uAC00-\uD7A3_]")
 
 class VMultiPath(Validator):
     def __init__(self, param, kinds=None, required=True, **kw):
