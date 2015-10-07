@@ -33,7 +33,7 @@
 
 <%namespace name="utils" file="utils.html"/>
  
-%if not thing.site and not c.user.can_create_subreddit:
+%if not thing.site and not c.user.can_create_subreddit and not c.user_is_admin:
 <div class="infobar">${_md("""
 # your account is too new to create a subreddit
     
