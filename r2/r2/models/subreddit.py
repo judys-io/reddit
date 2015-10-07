@@ -1696,8 +1696,8 @@ class AllFiltered(Filtered, AllMinus):
 
 
 class _DefaultSR(FakeSubreddit):
-    #notice the space before reddit.com
-    name = ' reddit.com'
+    #notice the space before judys.io
+    name = ' judys.io'
     path = '/'
     header = g.default_header_url
 
