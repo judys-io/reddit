@@ -59,33 +59,6 @@ r.analytics = {
         });
   },
 
-  _isGALoaded: false,
-
-  isGALoaded: function() {
-    // We've already passed this test, just return `true`
-    if (this._isGALoaded) {
-      return true;
-    }
-
-    // GA hasn't tried to load yet, so we can't know if it
-    // will succeed.
-    if (_.isArray(_gaq)) {
-      return undefined;
-    }
-
-    var test = false;
-
-    _gaq.push(function() {
-      test = true;
-    });
-
-    // Remember the result, so we only have to run this test once
-    // if it passes.
-    this._isGALoaded = test;
-
-    return test;
-  },
-
   _wrapCallback: function(callback) {
     var original = callback;
 
@@ -127,27 +100,21 @@ r.analytics = {
       return;
     }
 
-    if (!window._gaq || !this.shouldFireEvent.apply(this, arguments)) {
+    if (!window.ga || !this.shouldFireEvent.apply(this, arguments)) {
       callback();
       return;
     }
 
-    var isGALoaded = this.isGALoaded();
-
-    if (!isGALoaded) {
-      callback = this._wrapCallback(callback);
-    }
-
     // Virtual page views are needed for a funnel to work with GA.
     // see: http://gatipoftheday.com/you-can-use-events-for-goals-but-not-for-funnels/
-    _gaq.push(['_trackPageview', page]);
+    window.ga('send', 'pageview', page);
 
     // The goal can have a conversion value in GA.
     if (options.value) {
-      _gaq.push(['_trackEvent', category, action, options.label, options.value]);
+      window.ga('send', 'event', category, action, options.label, options.value);
     }
 
-    _gaq.push(callback);
+    setTimeout(callback, 200);
   },
 
   fireGAEvent: function(category, action, opt_label, opt_value, opt_noninteraction, callback) {
@@ -156,19 +123,15 @@ r.analytics = {
     opt_noninteraction = !!opt_noninteraction;
     callback = callback || function() {};
 
-    if (!window._gaq || !this.shouldFireEvent.apply(this, arguments)) {
+    if (!window.ga || !this.shouldFireEvent.apply(this, arguments)) {
       callback();
       return;
     }
 
-    var isGALoaded = this.isGALoaded();
+    window.ga('send', 'event', category, action, opt_label, opt_value,
+        {'nonInteraction': opt_noninteraction});
 
-    if (!isGALoaded) {
-      callback = this._wrapCallback(callback);
-    }
-
-    _gaq.push(['_trackEvent', category, action, opt_label, opt_value, opt_noninteraction]);
-    _gaq.push(callback);
+    setTimeout(callback, 200);
   },
 
   fireTrackingPixel: function(el) {
