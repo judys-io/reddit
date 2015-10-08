@@ -925,7 +925,7 @@ class Reddit(Templated):
                            or c.site.is_moderator_with_perms(c.user, 'wiki'))
             if c.site._should_wiki and (c.site.wikimode != 'disabled' or mod):
                 if not g.disable_wiki:
-                    main_buttons.append(NavButton('wiki', 'wiki'))
+                    main_buttons.append(NavButton(_('wiki'), 'wiki'))
 
             if (isinstance(c.site, (Subreddit, DefaultSR, MultiReddit)) and
                     c.site.allow_ads and not g.disable_ads):
