@@ -5398,7 +5398,6 @@ class PolicyPage(BoringPage):
     def build_toolbars(self):
         toolbars = BoringPage.build_toolbars(self)
         policies_buttons = [
-            NavButton(_('privacy policy'), '/privacypolicy'),
             NavButton(_('user agreement'), '/useragreement'),
             NavButton(_('content policy'), '/contentpolicy'),
         ]
