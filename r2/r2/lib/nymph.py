@@ -90,7 +90,7 @@ def _load_spritable_images(css_filename):
                 continue
 
             image_filename, should_stretch = _extract_css_info(m)
-            image = Image.open(os.path.join(css_location, image_filename))
+            image = Image.open(os.path.join(css_location, "../" + image_filename))
             image_hash = hashlib.md5(image.convert("RGBA").tostring()).hexdigest()
 
             if image_hash not in images:
