@@ -365,7 +365,7 @@ class VoteDetailsByThing(tdb_cassandra.View):
         vote_data = vote.data.copy()
 
         # pull the IP out of the data to store it separately with a TTL
-        ip = vote_data.pop("ip")
+        ip = vote_data.pop("ip", None)
 
         effects_data = vote.effects.serializable_data
         # split the notes out to store separately
