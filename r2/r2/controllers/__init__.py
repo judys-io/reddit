@@ -39,6 +39,9 @@ def add_controller(controller):
     return controller
 
 def load_controllers():
+    from r2.lib.translation import set_lang
+    set_lang('ko')
+
     from listingcontroller import ListingController
     from listingcontroller import HotController
     from listingcontroller import NewController
