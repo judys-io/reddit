@@ -1522,6 +1522,8 @@ def extract_user_mentions(text):
         if not url.startswith("/u/"):
             continue
 
+        url = url.encode('ascii');
+        url = unquote(url).decode('utf8');
         username = url[len("/u/"):]
         if not chkuser(username):
             continue
