@@ -58,14 +58,7 @@ class CloudFlareCdnProvider(CdnProvider):
     def get_client_ip(self, environ):
         try:
             client_ip = environ["HTTP_CF_CONNECTING_IP"]
-            provided_hash = environ["HTTP_CF_CIP_TAG"].lower()
         except KeyError:
-            return None
-
-        secret = g.secrets["cdn_ip_verification"]
-        expected_hash = hashlib.sha1(client_ip + secret).hexdigest()
-
-        if not constant_time_compare(expected_hash, provided_hash):
             return None
 
         return client_ip
