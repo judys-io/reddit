@@ -291,7 +291,7 @@ class SubredditListingController(ListingController):
             if not c.user_is_loggedin:
                 # This data is only for scrapers, which shouldn't be logged in.
                 twitter_card = {
-                    "site": "reddit",
+                    "site": "judys",
                     "card": "summary",
                     "title": self._build_og_title(max_length=70),
                     # Twitter will fall back to any defined OpenGraph
@@ -303,7 +303,7 @@ class SubredditListingController(ListingController):
 
                 return {
                     "og_data": {
-                        "site_name": "reddit",
+                        "site_name": "judys",
                         "title": self._build_og_title(),
                         "image": static('icon.png', absolute=True),
                         "description": self._build_og_description(),
@@ -1393,7 +1393,7 @@ class RedditsController(ListingController):
                                             stale = True)
                 reddits._sort = desc('_downs')
 
-            if g.domain != 'reddit.com':
+            if g.domain != 'judys.io':
                 # don't try to render /r/promos on opensource installations
                 promo_sr_id = Subreddit.get_promote_srid()
                 if promo_sr_id:

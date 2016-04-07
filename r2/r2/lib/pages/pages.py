@@ -1702,7 +1702,7 @@ class LinkInfoPage(Reddit):
     def _build_og_data(self, link_title, meta_description):
         sr_fragment = "/r/" + c.site.name if not c.default_sr else get_domain()
         data = {
-            "site_name": "reddit",
+            "site_name": "judys",
             "title": u"%s • %s" % (link_title, sr_fragment),
             "description": self._build_og_description(meta_description),
             "ttl": "600",  # re-fetch frequently to update vote/comment count
