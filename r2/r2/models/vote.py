@@ -150,6 +150,10 @@ class Vote(object):
         if self.previous_vote and self.previous_vote.affected_thing_attr:
             self.thing._incr(self.previous_vote.affected_thing_attr, -1)
 
+        if (self.previous_vote and not self.previous_vote.effects.affects_score and
+            self.previous_vote.is_self_vote):
+            self.thing._incr('_ups', -1)
+
         # add the new vote
         if self.affected_thing_attr:
             self.thing._incr(self.affected_thing_attr, 1)
@@ -245,8 +249,11 @@ class VoteEffects(object):
 
         if vote.previous_vote:
             if not vote.previous_vote.effects.affects_score:
-                self.add_note("PREVIOUS_VOTE_NO_EFFECT")
-                return False
+                if vote.previous_vote.is_self_vote:
+                    return True
+                else:
+                    self.add_note("PREVIOUS_VOTE_NO_EFFECT")
+                    return False
 
         if self.validator:
             affects_score = self.validator.determine_affects_score()
