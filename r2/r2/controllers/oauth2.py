@@ -398,9 +398,6 @@ class OAuth2AccessController(MinimalController):
         if client.app_type != "script":
             return self.api_wrapper({"error": "unauthorized_client",
                 "error_description": "Only script apps may use password auth"})
-        dev_ids = client._developer_ids
-        if not user or user._id not in dev_ids:
-            return self.api_wrapper({"error": "invalid_grant"})
         if c.errors:
             return self.api_wrapper(self._check_for_errors())
 
