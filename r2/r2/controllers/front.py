@@ -953,7 +953,7 @@ class FrontController(RedditController):
     @require_oauth2_scope("read")
     @validate(query=nop('q', docs={"q": "a search query"}),
               sort=VMenu('sort', SubredditSearchSortMenu, remember=False))
-    @api_doc(api_section.subreddits, uri='/subreddits/search', supports_rss=True)
+    @api_doc(api_section.subreddits, uri='/subs/search', supports_rss=True)
     def GET_search_reddits(self, query, reverse, after, count, num, sort):
         """Search subreddits by title and description."""
 

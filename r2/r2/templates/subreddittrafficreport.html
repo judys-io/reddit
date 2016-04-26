@@ -28,7 +28,7 @@
 <div class="raisedbox traffic-form">
 <p>${_("Enter one subreddit per line. Traffic numbers shown are for the last full month.")}</p>
 
-<form method="GET" action="/traffic/subreddits/report">
+<form method="GET" action="/traffic/subs/report">
   ${unsafe(SC_OFF)}<textarea name="subreddits" cols="30" rows="20">${thing.textarea}</textarea>${unsafe(SC_ON)}
   <input type="submit" value="${_('make report')}">
 </form>

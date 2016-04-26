@@ -78,25 +78,25 @@ def make_map(config):
        action='lang_traffic', langcode='')
     mc('/traffic/adverts/:code', controller='front',
        action='advert_traffic', code='')
-    mc('/traffic/subreddits/report', controller='front',
+    mc('/traffic/subs/report', controller='front',
        action='subreddit_traffic_report')
     mc('/account-activity', controller='front', action='account_activity')
 
-    mc('/subreddits/create', controller='front', action='newreddit')
-    mc('/subreddits/search', controller='front', action='search_reddits')
-    mc('/subreddits/login', controller='forms', action='login')
-    mc('/subreddits/:where', controller='reddits', action='listing',
+    mc('/subs/create', controller='front', action='newreddit')
+    mc('/subs/search', controller='front', action='search_reddits')
+    mc('/subs/login', controller='forms', action='login')
+    mc('/subs/:where', controller='reddits', action='listing',
        where='popular', conditions={'function':not_in_sr},
        requirements=dict(where="popular|new|banned|employee|gold|default|quarantine"))
     # If no subreddit is specified, might as well show a list of 'em.
-    mc('/r', controller='redirect', action='redirect', dest='/subreddits')
+    mc('/r', controller='redirect', action='redirect', dest='/subs')
 
-    mc('/subreddits/mine/:where', controller='myreddits', action='listing',
+    mc('/subs/mine/:where', controller='myreddits', action='listing',
        where='subscriber', conditions={'function':not_in_sr},
        requirements=dict(where='subscriber|contributor|moderator'))
 
     # These routes are kept for backwards-compatibility reasons
-    # Using the above /subreddits/ ones instead is preferable
+    # Using the above /subs/ ones instead is preferable
     mc('/reddits/create', controller='front', action='newreddit')
     mc('/reddits/search', controller='front', action='search_reddits')
     mc('/reddits/login', controller='forms', action='login')

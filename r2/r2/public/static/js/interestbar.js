@@ -40,7 +40,7 @@ r.ui.InterestBar.prototype = {
     queryChanged: function(query) {
         if (query && query.length > 1) {
             $.ajax({
-                url: '/api/subreddits_by_topic.json',
+                url: '/api/subs_by_topic.json',
                 data: {'query': query},
                 success: $.proxy(this, 'displayResults'),
                 error: $.proxy(this, 'displayError')

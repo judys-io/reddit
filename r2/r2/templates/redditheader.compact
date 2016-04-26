@@ -86,7 +86,7 @@
       &nbsp;(<b>${display_link_karma(c.user.link_karma)}</b>)
     </div>
     <div class="menuitem">
-      ${plain_link("subreddits", "/subreddits/mine", _sr_path=False)}
+      ${plain_link("subreddits", "/subs/mine", _sr_path=False)}
     </div>
     <div class="menuitem">
       ${plain_link("submit", "/submit", _sr_path=False)}
@@ -104,7 +104,7 @@
       ${plain_link("create an account", "/register", _sr_path=False)}
     </div>
     <div class="menuitem">
-      ${plain_link("subreddits", "/subreddits/", _sr_path=False)}
+      ${plain_link("subreddits", "/subs/", _sr_path=False)}
     </div>
    %endif
     <div class="menuitem">

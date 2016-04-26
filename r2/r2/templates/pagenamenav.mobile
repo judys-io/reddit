@@ -34,7 +34,7 @@
 
 <%def name="subreddits()">
   <span class="hover pagename redditname">
-    <a href="/subreddits/">${_("subreddits")}</a>
+    <a href="/subs/">${_("subreddits")}</a>
   </span>
 </%def>
 

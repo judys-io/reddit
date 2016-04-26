@@ -798,7 +798,7 @@ class Reddit(Templated):
                 subtitles = get_funny_translated_string("create_subreddit", 2)
                 data_attrs = {'event-action': 'createsubreddit'}
                 ps.append(SideBox(_('Create your own subreddit'),
-                           '/subreddits/create', 'create',
+                           '/subs/create', 'create',
                            subtitles=subtitles,
                            data_attrs=data_attrs,
                            show_cover = True, nocname=True))
@@ -2160,7 +2160,7 @@ class SubredditsPage(Reddit):
             search_params={},
             simple=True,
             subreddit_search=True,
-            search_path="/subreddits/search",
+            search_path="/subs/search",
         )
         self.sr_infobar = InfoBar(message = strings.sr_subscribe)
         self.interestbar = InterestBar(True) if show_interestbar else None
@@ -2179,12 +2179,12 @@ class SubredditsPage(Reddit):
         if c.user_is_loggedin:
             #add the aliases to "my reddits" stays highlighted
             buttons.append(NamedButton("mine",
-                                       aliases=['/subreddits/mine/subscriber',
-                                                '/subreddits/mine/contributor',
-                                                '/subreddits/mine/moderator']))
+                                       aliases=['/subs/mine/subscriber',
+                                                '/subs/mine/contributor',
+                                                '/subs/mine/moderator']))
 
         return [PageNameNav('subreddits'),
-                NavMenu(buttons, base_path = '/subreddits', type="tabmenu")]
+                NavMenu(buttons, base_path = '/subs', type="tabmenu")]
 
     def content(self):
         return self.content_stack((self.interestbar, self.searchbar,
@@ -2744,7 +2744,7 @@ class SubredditTopBar(CachedTemplate):
         drop_down_buttons.append(NavButton(menu.edit_subscriptions,
                                            sr_path = False,
                                            css_class = 'bottom-option',
-                                           dest = '/subreddits/'))
+                                           dest = '/subs/'))
         return SubredditMenu(drop_down_buttons,
                              title = _('my subreddits'),
                              type = 'srdrop')
@@ -3386,7 +3386,7 @@ class SearchForm(Templated):
 
 
 class SearchBar(Templated):
-    """More detailed search box for /search and /subreddits pages.
+    """More detailed search box for /search and /subs pages.
 
     Displays the previous search as well
 

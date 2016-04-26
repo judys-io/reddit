@@ -779,7 +779,7 @@ class SubredditTrafficReport(Templated):
                 self.report = make_subreddit_traffic_report(subreddits.values())
 
             param = urllib.quote(self.textarea)
-            self.csv_url = "/traffic/subreddits/report.csv?subreddits=" + param
+            self.csv_url = "/traffic/subs/report.csv?subreddits=" + param
 
         Templated.__init__(self)
 

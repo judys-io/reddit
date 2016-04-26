@@ -1226,7 +1226,7 @@ class ApiController(RedditController):
         by one of its current moderators.
 
         See also: [/api/friend](#POST_api_friend) and
-        [/subreddits/mine](#GET_subreddits_mine_{where}).
+        [/subs/mine](#GET_subreddits_mine_{where}).
 
         """
 
@@ -3695,7 +3695,7 @@ class ApiController(RedditController):
         be `unsub`. The user must have access to the subreddit to be able to
         subscribe to it.
 
-        See also: [/subreddits/mine/](#GET_subreddits_mine_{where}).
+        See also: [/subs/mine/](#GET_subreddits_mine_{where}).
 
         """
 
