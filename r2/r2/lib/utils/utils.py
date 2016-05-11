@@ -239,6 +239,21 @@ def path_component(s):
     res = r_path_component.findall(base_url(s))
     return (res and res[0]) or s
 
+def get_charset_from_html(url):
+    # get charset form html meta tag
+    req = Request(url)
+    opener = urlopen(req, timeout=15)
+    data = opener.read(1024)
+    bs = BeautifulSoup(data, convertEntities=BeautifulSoup.HTML_ENTITIES)
+    head_soup = bs.html.head
+
+    # There might be other encoding charset..
+    tag = head_soup.find("meta", attrs={"charset": "EUC-KR"})
+    if tag:
+        return "euc-kr"
+
+    return "utf-8"
+
 def get_title(url):
     """Fetch the contents of url and try to extract the page's title."""
     if not url or not url.startswith(('http://', 'https://')):
@@ -257,7 +272,8 @@ def get_title(url):
                 codec = codecs.getreader(charset)
                 break
         else:
-            codec = codecs.getreader("utf-8")
+            encoding = get_charset_from_html(url)
+            codec = codecs.getreader(encoding)
 
         with codec(opener, "ignore") as reader:
             # Attempt to find the title in the first 1kb
