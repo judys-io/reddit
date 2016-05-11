@@ -1056,7 +1056,7 @@ class MessageController(ListingController):
                 return False
 
             if (item.is_mention and
-                c.user.name.lower() not in extract_user_mentions(item.body)):
+                unicode(c.user.name.lower()) not in extract_user_mentions(item.body)):
                 return False
 
             return wouldkeep
