@@ -390,8 +390,10 @@ class OAuth2AccessController(MinimalController):
         return self.api_wrapper(resp)
 
     @validate(user=VThrottledLogin(["username", "password"]),
-              scope=nop("scope"))
-    def _access_token_password(self, user, scope):
+              scope=nop("scope"),
+              duration = VOneOf("duration", ("temporary", "permanent"),
+                                default="temporary"))
+    def _access_token_password(self, user, scope, duration):
         # username:password auth via OAuth is only allowed for
         # private use scripts
         client = c.oauth2_client
@@ -409,12 +411,21 @@ class OAuth2AccessController(MinimalController):
         else:
             scope = OAuth2Scope(OAuth2Scope.FULL_ACCESS)
 
-        access_token = OAuth2AccessToken._new(
+        refresh_token = None
+        if duration == "permanent":
+            refresh_token = OAuth2RefreshToken._new(
                 client._id,
                 user._id36,
                 scope
+            )
+
+        access_token = OAuth2AccessToken._new(
+                client._id,
+                user._id36,
+                scope,
+                refresh_token._id if refresh_token else ""
         )
-        resp = self._make_token_dict(access_token)
+        resp = self._make_token_dict(access_token, refresh_token)
         return self.api_wrapper(resp)
 
     @validate(
