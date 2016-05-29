@@ -243,16 +243,30 @@ def get_charset_from_html(url):
     # get charset form html meta tag
     req = Request(url)
     opener = urlopen(req, timeout=15)
-    data = opener.read(1024)
+    data = read = opener.read(1024)
     bs = BeautifulSoup(data, convertEntities=BeautifulSoup.HTML_ENTITIES)
-    head_soup = bs.html.head
+    tags = bs.findAll(attrs={"charset": True})
 
-    # There might be other encoding charset..
-    tag = head_soup.find("meta", attrs={"charset": "EUC-KR"})
-    if tag:
-        return "euc-kr"
+    # if the tags with 'charset' attr doesn't exist in first 1kb,
+    # find it within next 10kb.
+    while not tags and read:
+        read = opener.read(10240)
+        data += read
+        bs = BeautifulSoup(data, convertEntities=BeautifulSoup.HTML_ENTITIES)
+        tags = bs.findAll(attrs={"charset": True})
 
-    return "utf-8"
+    if tags:
+        return tags[0]['charset']
+
+    # if the 'charset' attr doesn't exists in any tag,
+    # find it in 'content' attr of 'meta' tag.
+    meta = bs.findAll("meta", attrs={"http-equiv": "Content-Type"})
+    content = meta[0].get('content')
+    match = re.search('charset=(.*)', content)
+    if match:
+        encoding = match.group(1)
+
+    return 'utf-8'
 
 def get_title(url):
     """Fetch the contents of url and try to extract the page's title."""
@@ -277,12 +291,13 @@ def get_title(url):
 
         with codec(opener, "ignore") as reader:
             # Attempt to find the title in the first 1kb
-            data = reader.read(1024)
+            data = read = reader.read(1024)
             title = extract_title(data)
 
             # Title not found in the first kb, try searching an additional 10kb
-            if not title:
-                data += reader.read(10240)
+            while not title and read:
+                read = reader.read(10240)
+                data += read
                 title = extract_title(data)
 
         return title
@@ -313,11 +328,17 @@ def extract_title(data):
     # if that failed, look for a <title> tag to use instead
     if not title and head_soup.title and head_soup.title.string:
         title = head_soup.title.string
+    else:
+        title_tags = bs.findAll("title")
+        if title_tags:
+            title = title_tags[0].string
 
-        # remove end part that's likely to be the site's name
-        # looks for last delimiter char between spaces in strings
-        # delimiters: |, -, emdash, endash,
-        #             left- and right-pointing double angle quotation marks
+    # remove end part that's likely to be the site's name
+    # looks for last delimiter char between spaces in strings
+    # delimiters: |, -, emdash, endash,
+    #             left- and right-pointing double angle quotation marks
+
+    if title:
         reverse_title = title[::-1]
         to_trim = re.search(u'\s[\u00ab\u00bb\u2013\u2014|-]\s',
                             reverse_title,
@@ -326,8 +347,7 @@ def extract_title(data):
         # only trim if it won't take off over half the title
         if to_trim and to_trim.end() < len(title) / 2:
             title = title[:-(to_trim.end())]
-
-    if not title:
+    else:
         return
 
     # get rid of extraneous whitespace in the title
