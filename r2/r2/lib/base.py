@@ -203,7 +203,7 @@ class BaseController(WSGIController):
         rv = _force_unicode(u.unparse()).encode('utf8')
         if "\n" in rv or "\r" in rv:
             abort(400)
-        return rv
+        return quote(rv)
 
     @classmethod
     def intermediate_redirect(cls, form_path, sr_path=True, fullpath=None):
