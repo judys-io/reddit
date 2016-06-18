@@ -26,6 +26,7 @@ import os
 from time import sleep
 import urllib
 
+from boto.regioninfo import RegionInfo
 from boto.s3.connection import S3Connection
 from boto.emr.connection import EmrConnection
 from boto.exception import S3ResponseError
@@ -53,8 +54,10 @@ AWS_LOG_DIR = g.AWS_LOG_DIR
 # to look for credentials in other places.
 s3_connection = S3Connection(g.TRAFFIC_ACCESS_KEY or None,
                              g.TRAFFIC_SECRET_KEY or None)
+_region = RegionInfo(name=g.EMR_REGION_NAME, endpoint=g.EMR_REGION_ENDPOINT)
 emr_connection = EmrConnection(g.TRAFFIC_ACCESS_KEY or None,
-                               g.TRAFFIC_SECRET_KEY or None)
+                               g.TRAFFIC_SECRET_KEY or None,
+                               region = _region)
 
 traffic_categories = (SitewidePageviews, PageviewsBySubreddit,
                       PageviewsBySubredditAndPath, PageviewsByLanguage,

@@ -51,7 +51,7 @@ class TrafficBase(EmrJob):
     BOOTSTRAP_NAME = 'traffic binaries'
     BOOTSTRAP_SCRIPT = os.path.join(g.TRAFFIC_SRC_DIR, 'traffic_bootstrap.sh')
     _defaults = dict(master_instance_type='m1.small',
-                     slave_instance_type='c3.2xlarge', num_slaves=1,
+                     slave_instance_type='m1.small', num_slaves=1,
                      job_flow_role=g.emr_trafic_job_flow_role,
                      service_role=g.emr_traffic_service_role)
 
