@@ -973,6 +973,9 @@ class MinimalController(BaseController):
         c.domain_prefix = request.environ.get("reddit-domain-prefix",
                                               g.domain_prefix)
         c.secure = request.environ["wsgi.url_scheme"] == "https"
+        if not c.secure:
+            cf = request.headers.get("CF-Visitor", "None")
+            c.secure = cf == "{\"scheme\":\"https\"}"
         c.request_origin = request.host_url
 
         #check if user-agent needs a dose of rate-limiting
